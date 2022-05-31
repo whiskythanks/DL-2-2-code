@@ -36,8 +36,24 @@ def Prepare(image_dir, is_save: bool):
 
 
 class Train_Dataset(Dataset):
-    def __init__(self, image_dir='Heart Data'):
-        self.images, self.labels = Prepare(image_dir, False)
+    def __init__(self, data_dir='Heart Data'):
+        # self.images, self.labels = Prepare(image_dir, False)
+        images = []
+        labels = []
+        image_names = os.listdir(os.path.join(data_dir,"Image"))
+        label_names = os.listdir(os.path.join(data_dir,"Label"))
+        for image_name in image_names:
+            image_path = os.path.join(data_dir,"Image",image_name)
+            temp_image = Image.open(image_path)
+            images.append[temp_image]
+        for label_name in label_names:
+            label_path = os.path.join(data_dir,"Label",label_name)
+            temp_label = Image.open(label_path)
+            labels.append[temp_label]
+        self.images = images
+        self.labels = labels
+        # print(len(images),len(labels))
+        
         # image：单通道黑白图像
         self.image_transform = transforms.Compose([transforms.CenterCrop(image_size),
                                                    transforms.ToTensor(), ])
@@ -54,8 +70,8 @@ class Train_Dataset(Dataset):
         # 打开相应image、label
         # image = Image.open(self.images[idx])
         # label = Image.open(self.labels[idx])
-        image = Image.open(self.images[idx]).convert('RGB')
-        label = Image.open(self.labels[idx])
+        image = self.images[idx].convert('RGB')
+        label = self.labels[idx]
         # image = Image.open(self.images[idx])
         # label = Image.open(self.labels[idx])
         # 图像变化
